@@ -100,6 +100,10 @@ jobs:
       fetch_cmd_aarch64-darwin: ${{ steps.report.outputs.fetch_cmd_aarch64-darwin }}
 
     steps:
+      - name: Allow unprivileged user namespaces
+        run: |
+          sudo sysctl kernel.apparmor_restrict_unprivileged_userns=0
+          
       - name: prepare /nix
         run: sudo mkdir /mnt/nix && sudo mount -m -o bind /mnt/nix /nix
         if: ${{ matrix.system == 'x86_64-linux' || matrix.system == 'aarch64-linux' }}
